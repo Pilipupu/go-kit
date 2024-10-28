@@ -24,5 +24,5 @@ type Container struct {
 type TestConfig struct {
 	ApiVersion string      `yaml:"apiVersion"`
 	Kind       string      `yaml:"kind"`
-	Container  []Container `yaml:"container"`
+	Container  []Container `yaml:"containers"`
 }

@@ -60,3 +60,31 @@ func NewDefaultOptions() *Options {
 		Level:         zapcore.DebugLevel,
 	}
 }
+
+type Option func(options *Options)
+
+func NewWithOptions(w io.Writer, opts ...Option) logr.Logger {
+	syncer := zapcore.AddSync(w)
+	ops := &Options{}
+	for _, opt := range opts {
+		opt(ops)
+	}
+	encoder := zapcore.NewJSONEncoder(ops.EncoderConfig)
+	core := zapcore.NewCore(encoder, syncer, ops.Level)
+	zapLogger := zap.New(core)
+
+	logger := zapr.NewLogger(zapLogger)
+	return logger
+}
+
+func WithEncoderConfig(config zapcore.EncoderConfig) func(options *Options) {
+	return func(options *Options) {
+		options.EncoderConfig = config
+	}
+}
+
+func WithLevel(level zapcore.Level) func(options *Options) {
+	return func(options *Options) {
+		options.Level = level
+	}
+}

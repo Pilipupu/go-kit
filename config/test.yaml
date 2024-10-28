@@ -2,4 +2,4 @@ apiVersion: "v1"
 kind: "Service"
 container:
 - command: "hello world"
-  name: "test container"
+  name: "test containers"
